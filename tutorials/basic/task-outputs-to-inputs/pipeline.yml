@@ -1,42 +1,42 @@
 ---
 resources:
-- name: resource-tutorial
+- name: concourse-tutorial
   type: git
   source:
-    uri: https://github.com/starkandwayne/concourse-tutorial.git
+    uri: https://github.com/Hemashree3016/concourse-tutorial.git
     branch: develop
 
 jobs:
 - name: job-pass-files
   public: true
   plan:
-  - get: resource-tutorial
+  - get: concourse-tutorial
   - task: create-some-files
     config:
       platform: linux
       image_resource:
-        type: docker-image
-        source: {repository: busybox}
+        type: registry-image
+        source: {repository: arm64v8/busybox}
 
       inputs:
-      - name: resource-tutorial
+      - name: concourse-tutorial
       outputs:
       - name: some-files
 
       run:
-        path: resource-tutorial/tutorials/basic/task-outputs-to-inputs/create_some_files.sh
+        path: concourse-tutorial/tutorials/basic/task-outputs-to-inputs/create_some_files.sh
 
   - task: show-some-files
     config:
       platform: linux
       image_resource:
-        type: docker-image
-        source: {repository: busybox}
+        type: registry-image
+        source: {repository: arm64v8/busybox}
 
       inputs:
-      - name: resource-tutorial
+      - name: concourse-tutorial
       - name: some-files
 
       run:
-        path: resource-tutorial/tutorials/basic/task-outputs-to-inputs/show_files.sh
+        path: concourse-tutorial/tutorials/basic/task-outputs-to-inputs/show_files.sh
 
